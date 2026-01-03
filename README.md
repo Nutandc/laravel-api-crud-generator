@@ -1,5 +1,10 @@
 # Laravel API CRUD Generator
 
+[![CI](https://github.com/Nutandc/laravel-api-crud-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/Nutandc/laravel-api-crud-generator/actions/workflows/ci.yml)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nutandc/api-crud-generator.svg)](https://packagist.org/packages/nutandc/api-crud-generator)
+[![Total Downloads](https://img.shields.io/packagist/dt/nutandc/api-crud-generator.svg)](https://packagist.org/packages/nutandc/api-crud-generator)
+[![License](https://img.shields.io/packagist/l/nutandc/api-crud-generator.svg)](LICENSE)
+
 Laravel API CRUD generator for models, controllers, requests, resources, migrations, routes, plus optional repository/service patterns.
 
 ## Requirements
