@@ -33,12 +33,13 @@ final class MakeCrudApiCommand extends Command
 
     public function handle(): int
     {
-        $name = (string) $this->argument('name');
-        $fields = (string) $this->option('fields');
+        $name = $this->stringArgument('name');
+        $fields = $this->stringOption('fields');
         $force = (bool) $this->option('force');
 
         if ($fields === '') {
-            $fields = (string) $this->ask('Enter fields (comma-separated). Example: name,email,age:integer');
+            $answer = $this->ask('Enter fields (comma-separated). Example: name,email,age:integer');
+            $fields = is_string($answer) ? $answer : '';
         }
 
         $options = [
@@ -63,6 +64,26 @@ final class MakeCrudApiCommand extends Command
         }
 
         return self::SUCCESS;
+    }
+
+    private function stringArgument(string $key): string
+    {
+        $value = $this->argument($key);
+        if (is_array($value)) {
+            return (string) ($value[0] ?? '');
+        }
+
+        return is_string($value) ? $value : '';
+    }
+
+    private function stringOption(string $key): string
+    {
+        $value = $this->option($key);
+        if (is_array($value)) {
+            return implode(',', array_map('strval', $value));
+        }
+
+        return is_string($value) ? $value : '';
     }
 
     private function resolveFlag(string $on, string $off, bool $default): bool

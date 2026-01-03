@@ -6,10 +6,14 @@ namespace Nutandc\ApiCrud\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @template TModel of Model
+ * @extends BaseRepository<TModel>
+ */
 final class CommonRepository extends BaseRepository
 {
     /**
-     * @param Model $model
+     * @param TModel $model
      */
     public function __construct(Model $model)
     {

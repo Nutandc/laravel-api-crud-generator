@@ -28,10 +28,16 @@ final class CrudGeneratorTest extends TestCase
         File::ensureDirectoryExists($base . '/routes');
         File::put($base . '/routes/api.php', "<?php\n\nuse Illuminate\\Support\\Facades\\Route;\n");
 
-        $this->artisan('crud:api', [
+        $result = $this->artisan('crud:api', [
             'name' => 'Post',
             '--fields' => 'title,body:text,is_active:boolean',
-        ])->assertExitCode(0);
+        ]);
+
+        if (is_int($result)) {
+            $this->assertSame(0, $result);
+        } else {
+            $result->assertExitCode(0);
+        }
 
         $this->assertTrue(File::exists($base . '/Models/Post.php'));
         $this->assertTrue(File::exists($base . '/Http/Controllers/Api/PostController.php'));
@@ -66,12 +72,18 @@ final class CrudGeneratorTest extends TestCase
         File::ensureDirectoryExists($base . '/routes');
         File::put($base . '/routes/api.php', "<?php\n\nuse Illuminate\\Support\\Facades\\Route;\n");
 
-        $this->artisan('crud:api', [
+        $result = $this->artisan('crud:api', [
             'name' => 'Order',
             '--fields' => '!total:decimal',
             '--service' => true,
             '--no-repo' => true,
-        ])->assertExitCode(0);
+        ]);
+
+        if (is_int($result)) {
+            $this->assertSame(0, $result);
+        } else {
+            $result->assertExitCode(0);
+        }
 
         $this->assertTrue(File::exists($base . '/Services/OrderService.php'));
         $this->assertFalse(File::exists($base . '/Repositories/OrderRepository.php'));

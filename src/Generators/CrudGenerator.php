@@ -15,6 +15,9 @@ final class CrudGenerator
     /** @var array<string, mixed> */
     private array $config;
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function __construct(
         private readonly Filesystem $files,
         private readonly StubPathResolver $stubResolver,
@@ -156,9 +159,6 @@ final class CrudGenerator
         $this->writeFile($path, $content, $force, $result, 'Resource');
     }
 
-    /**
-     * @param FieldDefinition[] $definitions
-     */
     private function generateController(string $className, bool $force, bool $useRepository, bool $useService, GenerationResult $result): void
     {
         $namespace = (string) data_get($this->config, 'namespaces.controller', 'App\\Http\\Controllers\\Api');
@@ -346,7 +346,6 @@ final class CrudGenerator
     }
 
     /**
-     * @param FieldDefinition[] $definitions
      * @return FieldDefinition[]
      */
     private function parseFields(string $fields): array

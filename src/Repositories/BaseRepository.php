@@ -18,6 +18,9 @@ abstract class BaseRepository implements RepositoryInterface
     /** @var TModel */
     protected Model $model;
 
+    /**
+     * @param TModel $model
+     */
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -31,7 +34,10 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->newQuery();
     }
 
-    public function paginate(int $perPage = null): LengthAwarePaginator
+    /**
+     * @return LengthAwarePaginator<int, TModel>
+     */
+    public function paginate(?int $perPage = null): LengthAwarePaginator
     {
         $perPage = $perPage ?? (int) config('api-crud-generator.pagination.per_page', 15);
 
@@ -57,6 +63,9 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * @return TModel
      */
+    /**
+     * @param array<string, mixed> $attributes
+     */
     public function create(array $attributes): Model
     {
         return $this->query()->create($attributes);
@@ -65,6 +74,9 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * @param TModel $model
      * @return TModel
+     */
+    /**
+     * @param array<string, mixed> $attributes
      */
     public function update(Model $model, array $attributes): Model
     {

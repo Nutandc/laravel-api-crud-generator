@@ -19,9 +19,9 @@ interface RepositoryInterface
     public function query(): Builder;
 
     /**
-     * @return LengthAwarePaginator<TModel>
+     * @return LengthAwarePaginator<int, TModel>
      */
-    public function paginate(int $perPage = null): LengthAwarePaginator;
+    public function paginate(?int $perPage = null): LengthAwarePaginator;
 
     /**
      * @return TModel|null
@@ -34,12 +34,14 @@ interface RepositoryInterface
     public function findOrFail(int|string $id): Model;
 
     /**
+     * @param array<string, mixed> $attributes
      * @return TModel
      */
     public function create(array $attributes): Model;
 
     /**
      * @param TModel $model
+     * @param array<string, mixed> $attributes
      * @return TModel
      */
     public function update(Model $model, array $attributes): Model;
