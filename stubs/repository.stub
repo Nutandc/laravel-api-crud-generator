@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use {{baseRepository}};
+use {{modelNamespace}}\{{modelClass}};
+
+/** @extends {{baseRepositoryShort}}<{{modelClass}}> */
+final class {{class}} extends {{baseRepositoryShort}}
+{
+    public function __construct({{modelClass}} $model)
+    {
+        parent::__construct($model);
+    }
+}

@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use {{requestNamespace}}\{{requestClass}};
+use {{modelNamespace}}\{{modelClass}};
+use {{resourceNamespace}}\{{resourceClass}};
+use {{baseController}};
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Throwable;
+
+final class {{class}} extends {{baseControllerShort}}
+{
+    public function __construct(private readonly {{modelClass}} ${{modelVar}})
+    {
+    }
+
+    public function index(): JsonResponse
+    {
+        ${{modelVarPlural}} = {{resourceClass}}::collection(
+            $this->{{modelVar}}->newQuery()->paginate(config('api-crud-generator.pagination.per_page', 15))
+        );
+
+        return $this->respondWithCollection(${{modelVarPlural}});
+    }
+
+    public function store({{requestClass}} $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            return DB::transaction(function () use ($validated) {
+                $this->{{modelVar}}->create($validated);
+
+                return $this->success(null, '{{modelClass}} created successfully', 201);
+            });
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+
+    public function show({{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        return $this->respondWithResource(new {{resourceClass}}(${{modelVar}}));
+    }
+
+    public function update({{requestClass}} $request, {{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            return DB::transaction(function () use ($validated, ${{modelVar}}) {
+                ${{modelVar}}->update($validated);
+
+                return $this->success(null, '{{modelClass}} updated successfully');
+            });
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+
+    public function destroy({{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        try {
+            ${{modelVar}}->delete();
+
+            return $this->success(null, '{{modelClass}} deleted successfully');
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+}

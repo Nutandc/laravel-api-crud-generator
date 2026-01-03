@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use {{requestNamespace}}\{{requestClass}};
+use {{modelNamespace}}\{{modelClass}};
+use {{resourceNamespace}}\{{resourceClass}};
+use {{baseController}};
+use {{repositoryClass}};
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Throwable;
+
+final class {{class}} extends {{baseControllerShort}}
+{
+    public function __construct(private readonly {{repositoryShort}} $repository)
+    {
+    }
+
+    public function index(): JsonResponse
+    {
+        ${{modelVarPlural}} = {{resourceClass}}::collection($this->repository->paginate());
+
+        return $this->respondWithCollection(${{modelVarPlural}});
+    }
+
+    public function store({{requestClass}} $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            return DB::transaction(function () use ($validated) {
+                $this->repository->create($validated);
+
+                return $this->success(null, '{{modelClass}} created successfully', 201);
+            });
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+
+    public function show({{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        return $this->respondWithResource(new {{resourceClass}}(${{modelVar}}));
+    }
+
+    public function update({{requestClass}} $request, {{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            return DB::transaction(function () use ($validated, ${{modelVar}}) {
+                $this->repository->update(${{modelVar}}, $validated);
+
+                return $this->success(null, '{{modelClass}} updated successfully');
+            });
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+
+    public function destroy({{modelClass}} ${{modelVar}}): JsonResponse
+    {
+        try {
+            $this->repository->delete(${{modelVar}});
+
+            return $this->success(null, '{{modelClass}} deleted successfully');
+        } catch (Throwable $exception) {
+            return $this->error($exception->getMessage(), 500);
+        }
+    }
+}

@@ -1,0 +1,10 @@
+parameters:
+  level: 7
+  paths:
+    - src
+    - tests
+  tmpDir: storage/phpstan
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+includes:
+  - vendor/phpstan/phpstan-phpunit/extension.neon

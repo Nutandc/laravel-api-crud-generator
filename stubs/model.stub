@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use Illuminate\Database\Eloquent\Model;
+
+final class {{class}} extends Model
+{
+    protected $guarded = ['id'];
+    protected $fillable = [{{fillable}}];
+}

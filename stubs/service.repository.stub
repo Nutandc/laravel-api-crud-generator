@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use {{repositoryClass}};
+use {{modelNamespace}}\{{modelClass}};
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+
+final class {{class}}
+{
+    public function __construct(private readonly {{repositoryShort}} $repository)
+    {
+    }
+
+    public function paginate(?int $perPage = null): LengthAwarePaginator
+    {
+        return $this->repository->paginate($perPage ?? (int) config('api-crud-generator.pagination.per_page', 15));
+    }
+
+    public function create(array $attributes): Model
+    {
+        return $this->repository->create($attributes);
+    }
+
+    public function update({{modelClass}} $model, array $attributes): Model
+    {
+        return $this->repository->update($model, $attributes);
+    }
+
+    public function delete({{modelClass}} $model): bool
+    {
+        return $this->repository->delete($model);
+    }
+}
