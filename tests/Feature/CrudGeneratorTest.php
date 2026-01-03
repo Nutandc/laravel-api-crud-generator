@@ -64,7 +64,7 @@ final class CrudGeneratorTest extends TestCase
         ]);
 
         File::ensureDirectoryExists($base . '/routes');
-        File::put($base . '/routes/api.php', \"<?php\\n\\nuse Illuminate\\\\Support\\\\Facades\\\\Route;\\n\");
+        File::put($base . '/routes/api.php', "<?php\n\nuse Illuminate\\Support\\Facades\\Route;\n");
 
         $this->artisan('crud:api', [
             'name' => 'Order',
